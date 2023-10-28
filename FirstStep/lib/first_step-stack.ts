@@ -11,16 +11,21 @@ export class FirstStepStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
     
-    const fn = new lambda.Function
-    (this, 'MyFunction', {
+    const fn = new lambda.Function(this, 'MyFunction', {
       runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'hello.handler',
       code: lambda.Code.fromAsset('lambda'),
     });
-    // declare const backend: lambda.Function;
-    new apigateway.LambdaRestApi(this, 'myapilambda', {
+
+    const res= new apigateway.LambdaRestApi(this, 'myapilambda', {
       handler: fn,
+      proxy:false
     });
+    const check=res.root.addResource("resource")
+    check.addMethod("GET")
+    const check2=res.root.addResource("Chelsea")
+    check2.addMethod("POST")
+    check2.addMethod("GET")
   }
 }
 
